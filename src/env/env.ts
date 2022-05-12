@@ -4,7 +4,7 @@ import { config as configDotenv } from 'dotenv';
 
 import { EnvironmentFile, Environments } from './env.enums';
 
-class Environment {
+export default class Environment {
     /**
      * The port of the Application
      */
@@ -105,5 +105,3 @@ class Environment {
         return this.getCurrentEnvironment() === Environments.TEST;
     }
 }
-
-export default Environment;
