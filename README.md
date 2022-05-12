@@ -2,6 +2,20 @@
 
 API Rest for my Final Degree Project made with Typescript, Express and Prisma.
 
+# Environment files
+
+Insert .env file into the main directory with the following content:
+
+```
+NODE_ENV=dev
+SERVER=127.0.0.1
+PORT=3300
+APPLY_ENCRYPTION=true
+SECRET_KEY=0304141412
+DATABASE_URL=mysql://root:pass@127.0.0.1:6033/db
+```
+
+
 # Steps to create the project
 
 1. Inicializamos el proyecto de Node e introducimos la configuración deseada (dos archivos package.json y package-lock.json):
