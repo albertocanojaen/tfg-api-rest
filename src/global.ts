@@ -1,4 +1,4 @@
-import Environment from './env/env';
+import Environment from './environment/env';
 
 declare global {
     // eslint-disable-next-line no-var
