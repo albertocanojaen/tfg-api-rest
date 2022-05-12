@@ -11,6 +11,11 @@ export default class Environment {
     public port: number;
 
     /**
+     * The server of the Application
+     */
+    public server: string;
+
+    /**
      * The secret key
      */
     public secretKey: string;
@@ -26,8 +31,10 @@ export default class Environment {
      */
     constructor(NODE_ENV?: string) {
         const env: string = NODE_ENV || process.env.NODE_ENV || Environments.DEV;
+        const server: string = process.env.SERVER || '0.0.0.0';
         const port: string | undefined | number = process.env.PORT || 3000;
         this.setEnvironment(env);
+        this.server = server;
         this.port = Number(port);
         this.forceEncryption = JSON.parse(process.env.APPLY_ENCRYPTION!);
         this.secretKey = process.env.SECRET_KEY!;
