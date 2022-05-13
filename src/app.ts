@@ -1,12 +1,14 @@
 import cors from 'cors';
-import express from 'express';
+import express, { Router } from 'express';
 import http from 'http';
 import helmet from 'helmet';
 import morgan from 'morgan';
-
+import httpStatus from 'http-status';
 import registerRoutes from './routes';
 import Logger from './lib/logger';
-import errorHandler from './lib/error-handler';
+import { Request, Response, NextFunction } from 'express';
+import { InvalidArgumentError } from './exceptions/invalid-argument-error';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 export default class App {
     /**
@@ -20,11 +22,17 @@ export default class App {
     public httpServer!: http.Server;
 
     /**
+     * Router
+     */
+    public router!: Router;
+
+    /**
      * Initialize the application asynchronously
      */
     public async init(): Promise<void> {
         this.express = express();
         this.httpServer = http.createServer(this.express);
+        this.router = Router();
 
         // Load all the middlewares
         this.middleware();
@@ -32,8 +40,8 @@ export default class App {
         // Load all the routes
         this.routes();
 
-        // Set the error handler
-        this.addErrorHandler();
+        // Load the error middleware
+        this.errorMiddleware();
     }
 
     /**
@@ -41,7 +49,10 @@ export default class App {
      */
     private routes(): void {
         // Register all the routes defined on routes.ts
-        registerRoutes(this.express);
+        registerRoutes(this.router);
+
+        // Use the router
+        this.express.use(this.router);
 
         // Notify the routes finished loading
         Logger.info(`✨ Routes registered successfully!`);
@@ -70,7 +81,35 @@ export default class App {
         Logger.info(`✨ Middlewares established correctly!`);
     }
 
-    private addErrorHandler(): void {
-        this.express.use(errorHandler);
+    private errorMiddleware(): void {
+        // Middleware for errors
+        this.router.use((error: Error | InvalidArgumentError, request: Request, response: Response, next: NextFunction) => {
+            // Log the error
+            Logger.error(error.stack || error.message);
+
+            // Generate the error in JSON
+            const jsonError = {
+                code: error.constructor.name,
+                message: error.message,
+            };
+
+            // Set the default status code
+            let statusCode = httpStatus.INTERNAL_SERVER_ERROR;
+
+            // Check if is an invalid argument error
+            if (error instanceof InvalidArgumentError) {
+                // Set the status code
+                statusCode = error.statusCode;
+            }
+
+            response.status(statusCode).json(jsonError);
+        });
+
+        this.router.use((request: Request, response: Response, next: NextFunction) => {
+            response.status(httpStatus.NOT_FOUND).json('Resource not found');
+        });
+
+        // Notify middleware finished loading
+        Logger.info(`✨ Middleware for errors established correctly!`);
     }
 }

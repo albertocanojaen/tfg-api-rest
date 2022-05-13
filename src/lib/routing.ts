@@ -1,12 +1,12 @@
-import express from 'express';
+import { Router } from 'express';
 import Logger from './logger';
 
 export abstract class Routing {
-    app: express.Application;
+    router: Router;
     name: string;
 
-    constructor(app: express.Application, name: string) {
-        this.app = app;
+    constructor(router: Router, name: string) {
+        this.router = router;
         this.name = name;
         this.configureRoutes();
         this.sendLog();
@@ -19,5 +19,5 @@ export abstract class Routing {
         Logger.info(`📍 The ${this.getName()} route is created successfully!`);
     }
 
-    abstract configureRoutes(): express.Application;
+    abstract configureRoutes(): Router;
 }
