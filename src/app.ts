@@ -8,7 +8,6 @@ import registerRoutes from './routes';
 import Logger from './lib/logger';
 import { Request, Response, NextFunction } from 'express';
 import { InvalidArgumentError } from './exceptions/invalid-argument-error';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 export default class App {
     /**
