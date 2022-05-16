@@ -5,8 +5,9 @@ import { Controller } from '../../../interfaces/controller';
 import httpStatus from 'http-status';
 import { UserCreatorValidator } from '../../validators/users/user-creator-validator';
 import { Passwords } from '../../../lib/password';
+import { UserEraserValidator } from '../../validators/users/user-eraser-validator';
 
-export class CreateUserController implements Controller {
+export class DeleteUserController implements Controller {
     /**
      * Execute the use case
      * @param request
@@ -14,17 +15,23 @@ export class CreateUserController implements Controller {
      * @returns
      */
     public async run(request: Request, response: Response): Promise<any> {
-        // Validate the body parameters
-        await new UserCreatorValidator().validate(request.body);
+        // Gets the user identifier
+        const userId = Number(request.params.id);
 
-        // Encrypt the user password
-        request.body.password = Passwords.encrypt(request.body.password);
+        // Get the user object
+        const user: User = {
+            id: userId,
+            createdAt: new Date(),
+            email: '',
+            name: null,
+            password: '',
+        };
 
-        // Create the object
-        const user: User = request.body;
+        // Validate for erase
+        await new UserEraserValidator().validate(user);
 
-        // Insert into the database
-        await new UsersService().create(request.body);
+        // Erase from the database
+        await new UsersService().delete(userId);
 
         // Return the response
         response.status(httpStatus.OK).send();

@@ -4,7 +4,7 @@ export interface CRUD<Primitives> {
      *
      * @param object
      */
-    create(object: Primitives): Promise<Primitives | void>;
+    create(object: Primitives): Promise<Primitives>;
 
     /**
      * List one or more objects from the database that matches the query parameters.
@@ -23,5 +23,5 @@ export interface CRUD<Primitives> {
      * Delete the field that matches the id in the parameters from the database.
      * @param id
      */
-    delete(id: number): Promise<void>;
+    delete(id: number): Promise<Primitives>;
 }

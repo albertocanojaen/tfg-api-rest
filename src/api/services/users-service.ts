@@ -3,7 +3,7 @@ import { User } from '@prisma/client';
 import { CRUD } from '../../interfaces/service';
 
 class UsersService implements CRUD<User> {
-    public async create(args: User): Promise<User | void> {
+    public async create(args: User): Promise<User> {
         return await PrismaHandler.client.user.create({
             data: args,
         });
@@ -17,8 +17,12 @@ class UsersService implements CRUD<User> {
         throw new Error('Method not implemented.');
     }
 
-    delete(id: number): Promise<void> {
-        throw new Error('Method not implemented.');
+    public async delete(id: number): Promise<User> {
+        return await PrismaHandler.client.user.delete({
+            where: {
+                id: id,
+            },
+        });
     }
 }
 
