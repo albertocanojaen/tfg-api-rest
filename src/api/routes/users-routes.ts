@@ -1,6 +1,7 @@
 import { Routing } from '../../lib/routing';
-import { Request, Response, Router } from 'express';
+import { Request, Response, Router, NextFunction } from 'express';
 import { CreateUserController } from '../controllers/users/create-user-controller';
+import { GetUsersController } from '../controllers/users/get-users-controller';
 
 export class UsersRoutes extends Routing {
     constructor(router: Router) {
@@ -17,23 +18,27 @@ export class UsersRoutes extends Routing {
         this.router.get('/user/:id');
 
         /**
-         * Calls for /users endpoint
-         * 1) List all the users in the database
+         * Endpoint /users
+         * 1) GetUsersController
          *
          */
-        this.router.route('/users').post((req: Request, res: Response) => {
-            // GetUsersController.run(req, res);
+        this.router.route('/users').post(async (req: Request, res: Response, next: NextFunction) => {
+            try {
+                await new GetUsersController().run(req, res);
+            } catch (error) {
+                return next(error);
+            }
         });
 
         /**
-         * Insert a new user in the database
+         * Endpoint /user
          */
-        this.router.post('/user', (req: Request, res: Response) => {
-            const controller = new CreateUserController();
-
-            console.log(controller);
-
-            controller.run(req, res);
+        this.router.post('/user', async (req: Request, res: Response, next: NextFunction) => {
+            try {
+                await new CreateUserController().run(req, res);
+            } catch (error) {
+                return next(error);
+            }
         });
 
         return this.router;

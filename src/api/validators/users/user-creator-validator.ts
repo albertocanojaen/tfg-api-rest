@@ -3,6 +3,9 @@ import { User } from '@prisma/client';
 import PrismaHandler from '../../../lib/prisma-handler';
 import { EmailAlreadyInUse } from '../../../exceptions/users/email-already-in-use';
 import { EmailIsEmpty } from '../../../exceptions/users/email-is-empty';
+import { PasswordIsEmpty } from '../../../exceptions/users/password-is-empty';
+import { Passwords } from '../../../lib/password';
+import { PasswordIsNotSecure } from '../../../exceptions/users/password-is-not-secure';
 
 export class UserCreatorValidator implements Validator<User> {
     /**
@@ -13,6 +16,7 @@ export class UserCreatorValidator implements Validator<User> {
 
     async validate(primitives: User): Promise<void> {
         await this.isEmailInUse(primitives?.email);
+        await this.isPasswordSecure(primitives?.password);
     }
 
     /**
@@ -38,6 +42,23 @@ export class UserCreatorValidator implements Validator<User> {
         // Check if the user exists
         if (user) {
             throw new EmailAlreadyInUse();
+        }
+    }
+
+    /**
+     * Determines if the password matches the defined RegEx
+     *
+     * @param password
+     */
+    private async isPasswordSecure(password: string): Promise<void> {
+        // Check if the password is empty
+        if (!password) {
+            throw new PasswordIsEmpty();
+        }
+
+        // Check if password match the RegEx
+        if (!Passwords.regex.test(password)) {
+            throw new PasswordIsNotSecure();
         }
     }
 }
