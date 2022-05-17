@@ -8,7 +8,9 @@ class PrismaHandler {
      * Class constructor to instantiate the prisma client
      */
     constructor() {
-        this._client = new PrismaClient();
+        this._client = new PrismaClient({
+            log: ['query', 'info'],
+        });
     }
 
     /**
