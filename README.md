@@ -16,36 +16,59 @@ DATABASE_URL=mysql://root:pass@127.0.0.1:6033/db
 ```
 
 
-# :pencil: Pasos de creación de la API 
+# :pencil: Instalación
 
-1. Inicializamos el proyecto de Node e introducimos la configuración deseada (dos archivos package.json y package-lock.json):
+1. Para la instalación del proyecto se requiere tener instalado tanto Node.js como npm en el sistema. Si tenemos ambos instalados desde el directorio del proyecto deberemos ejecutar el siguiente comando:
 
 ```
-npm init
-```
-
-2. También es necesario inicializar nuestro proyecto (generando el archivo tsconfig.json):
-```
-tsc --init
+npm install
 ```
 
-3. Incluimos el script que permitirá compilar nuestra API en modo de desarrollo:
+2. En el package.json del proyecto he includo distintos scripts para facilitar la inicialización del proyecto. Para ello he preparado un contenedor de Docker donde incluyo una instalación limpia de MySQL y phpymadmin como DBMS (Database Management System). Para la creación del contenedor, es necesario tener instalado y en ejecución Docker, y ejecutar el siguiente comando en el directorio raiz del proyecto: 
 ```
-ts-node-dev --respawn ./src/index.ts
-```
-
-4. Es importante utilizar alguna librería para testear nuestra API (utilizaremos jest) y para ello inicializamos el archivo de configuración básico:
-```
-export default {
-    preset: 'ts-jest',
-    testEnvironment: 'node',
-};
+docker compose up -d
 ```
 
-5. Utilizaré un ORM que nos permite mapear la estructura de una base de datos relacional y trabajar sobre una estructura lógica de entidades para acelerar el desarrollo de la aplicación. Inicializamos prisma:
+3. Debemos también modificar el archivo de entorno mencionado anteriormente con los datos necesarios e incluirlo en el directorio raiz del proyecto. 
+
+4. Es necesario generar el schema de Prisma, para poder crear las correspondientes tablas en la base de datos (esto es necesario realizarlo una única vez al instalar el proyecto). Para ello debemos ejecutar los siguientes comandos en el orden indicado:
 ```
-npx prisma init
+1) npx prisma migrate dev
+2) npx prisma generate
 ```
+
+5. Una vez realizados todos los cambios anteriores, para iniciar la API en modo de desarrollo deberíamos ejecutar el siguiente script de npm:
+```
+npm run dev
+```
+
+# :triangular_ruler: Criteria
+Para la elaboración de la API, estoy utilizando Prisma como ORM, siendo un ORM un modelo de programación que permite mapear las estructuras de una base de datos relacional (SQL Server, Oracle, MySQL, etc.), en adelante RDBMS (Relational Database Management System), sobre una estructura lógica de entidades con el objeto de simplificar y acelerar el desarrollo de nuestras aplicaciones.
+
+Para poder abstraernos de Prisma fácilmente un controlador de la API (para por ejemplo listar los usuarios con id mayor que 2 y ordenarlos por nombre ascendente) parseará los Criterios estructurados bajo mi criterio a la implementación concreta de Prisma. 
+
+El cuerpo de la llamada HTTP en cuestión sería el siguiente: 
+```
+{
+    "filters": [
+        {
+            "connector": "OR",
+            "field": "id",
+            "operator": "gt",
+            "value": 2
+        },
+        {
+            "connector": "AND",
+            "field": "email",
+            "operator": "equals",
+            "value": "tf13g@tfg.com"
+        }
+    ],
+    "orderBy": {
+        "name": "asc"
+    }
+}
+``` 
 
 # :closed_book: Dependencias
 
