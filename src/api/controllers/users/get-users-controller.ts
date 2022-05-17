@@ -6,9 +6,9 @@ import { Controller } from '../../../interfaces/controller';
 import { Criteria } from '../../../lib/criteria/criteria';
 
 export class GetUsersController implements Controller {
-    public async run(request: Request, response: Response): Promise<any> {
+    public async run(request: Request, response: Response): Promise<void> {
         // Generate the criteria from the request body
-        let criteria: Criteria = Criteria.fromBodyParameters(request.body);
+        const criteria: Criteria = Criteria.fromBodyParameters(request.body);
 
         // Call the service to insert into the database
         const users: User[] = await new UsersService().read(criteria.parseCriteriaToPrisma());

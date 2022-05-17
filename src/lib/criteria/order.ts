@@ -1,12 +1,13 @@
 import { InvalidOrderFormat } from '../../exceptions/criteria/invalid-order';
 import { OrderMaxLength } from '../../exceptions/criteria/order-max-length';
+import { OrderInterface } from '../../interfaces/criteria/order-interface';
 export class Order {
     /**
      * Class constructor
      *
      * @param orderBy
      */
-    constructor(public orderBy: { [key: string]: string }) {}
+    constructor(public orderBy: OrderInterface) {}
 
     /**
      * Generates an order from the received body parameters
@@ -14,7 +15,7 @@ export class Order {
      * @param parameters
      * @return Order
      */
-    public static fromValues(parameters: { [key: string]: string }): Order {
+    public static fromValues(parameters: OrderInterface): Order {
         // Check if order parameters length is more than one
         if (Object.keys(parameters).length > 1) {
             throw new OrderMaxLength();
@@ -43,7 +44,7 @@ export class Order {
      * @returns Order
      */
     public static defaultOrder(): Order {
-        const defaultMap = { id: 'asc' };
+        const defaultMap: OrderInterface = { id: 'asc' };
         return new Order(defaultMap);
     }
 }

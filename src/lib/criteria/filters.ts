@@ -37,8 +37,13 @@ export class Filters {
      *
      */
     public parseFiltersToPrisma() {
+        // Check if there is no filter
+        if (this.filters.length == 0) {
+            return {};
+        }
+
         // Check if there is only one filter
-        if (this.filters.length === 1) {
+        if (this.filters.length == 1) {
             const filter = this.filters.at(0);
 
             if (!filter?.field || !filter?.operator || !filter?.value) {
@@ -53,6 +58,7 @@ export class Filters {
                 },
             };
         }
+
         // Check if we have more than one filter
         if (this.filters.length > 1) {
             const orFilters: { [x: string]: { [x: string]: string } }[] = [];

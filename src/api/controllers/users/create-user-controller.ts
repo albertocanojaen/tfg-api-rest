@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import UsersService from '../../services/users-service';
-import { User } from '@prisma/client';
 import { Controller } from '../../../interfaces/controller';
 import httpStatus from 'http-status';
 import { UserCreatorValidator } from '../../validators/users/user-creator-validator';
-import { Passwords } from '../../../lib/password';
+import { UserModel } from '../../models/user-model';
+import { User } from '@prisma/client';
 
 export class CreateUserController implements Controller {
     /**
@@ -13,18 +13,15 @@ export class CreateUserController implements Controller {
      * @param response
      * @returns
      */
-    public async run(request: Request, response: Response): Promise<any> {
+    public async run(request: Request, response: Response): Promise<void> {
         // Validate the body parameters
         await new UserCreatorValidator().validate(request.body);
 
-        // Encrypt the user password
-        request.body.password = Passwords.encrypt(request.body.password);
-
-        // Create the object
-        const user: User = request.body;
+        // Create the user model
+        const user: User = new UserModel(request.body);
 
         // Insert into the database
-        await new UsersService().create(request.body);
+        await new UsersService().create(user);
 
         // Return the response
         response.status(httpStatus.OK).send();

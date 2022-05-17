@@ -4,6 +4,8 @@ import { CRUD } from '../../interfaces/service';
 
 class UsersService implements CRUD<User> {
     public async create(args: User): Promise<User> {
+        console.log(args);
+
         return await PrismaHandler.client.user.create({
             data: args,
         });
