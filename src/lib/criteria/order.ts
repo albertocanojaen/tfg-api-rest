@@ -1,3 +1,5 @@
+import { InvalidOrderFormat } from '../../exceptions/criteria/invalid-order';
+import { OrderMaxLength } from '../../exceptions/criteria/order-max-length';
 export class Order {
     /**
      * Class constructor
@@ -13,21 +15,23 @@ export class Order {
      * @return Order
      */
     public static fromValues(parameters: { [key: string]: string }): Order {
-        // Get the first value of the map
-        console.log(Object.values(parameters));
-
-        for (const key in parameters) {
-            if (Object.prototype.hasOwnProperty.call(parameters, key)) {
-                const value = parameters[key];
-
-                console.log(`${key} -> ${value}`);
-            }
+        // Check if order parameters length is more than one
+        if (Object.keys(parameters).length > 1) {
+            throw new OrderMaxLength();
         }
 
-        // // Check if the order is not asc or desc
-        // if (firstValue.toLowerCase() != 'asc' || firstValue.toLowerCase() != 'desc') {
-        //     return this.defaultOrder();
-        // }
+        // Get the first value of the map
+        for (const key in parameters) {
+            if (Object.prototype.hasOwnProperty.call(parameters, key)) {
+                // Change asc or desc to lower case
+                parameters[key] = parameters[key].toLowerCase();
+
+                // Check if is not asc or desc the order
+                if (parameters[key] !== 'asc' && parameters[key] !== 'desc') {
+                    throw new InvalidOrderFormat();
+                }
+            }
+        }
 
         // Return the desired order
         return new Order(parameters);
@@ -39,7 +43,7 @@ export class Order {
      * @returns Order
      */
     public static defaultOrder(): Order {
-        let defaultMap = { id: 'asc' };
+        const defaultMap = { id: 'asc' };
         return new Order(defaultMap);
     }
 }

@@ -39,8 +39,6 @@ export class Criteria {
             order = Order.defaultOrder();
         }
 
-        console.log(order);
-
         return new Criteria(filters, order);
     }
 
@@ -55,7 +53,7 @@ export class Criteria {
      * @returns
      */
     public concatCriteria(o1: any, o2: any) {
-        for (var key in o2) {
+        for (const key in o2) {
             o1[key] = o2[key];
         }
         return o1;

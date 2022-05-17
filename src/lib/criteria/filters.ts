@@ -11,9 +11,9 @@ export class Filters {
     /**
      * Generate the filters from the received map
      */
-    public static fromValues(map: any[]): Filters {
+    public static fromValues(map: Filter[]): Filters {
         // Generate an empty array to insert the filters
-        let filters: Filter[] = [];
+        const filters: Filter[] = [];
 
         // For each filters in the primitives
         map.forEach((filter: Filter) => {
@@ -39,18 +39,24 @@ export class Filters {
     public parseFiltersToPrisma() {
         // Check if there is only one filter
         if (this.filters.length === 1) {
+            const filter = this.filters.at(0);
+
+            if (!filter?.field || !filter?.operator || !filter?.value) {
+                return {};
+            }
+
             return {
                 where: {
-                    [this.filters.at(0)?.field!]: {
-                        [this.filters.at(0)?.operator!]: this.filters.at(0)?.value,
+                    [filter.field]: {
+                        [filter.operator]: filter.value,
                     },
                 },
             };
         }
         // Check if we have more than one filter
         if (this.filters.length > 1) {
-            let orFilters: any[] = [];
-            let andFilters: any[] = [];
+            const orFilters: { [x: string]: { [x: string]: string } }[] = [];
+            const andFilters: { [x: string]: { [x: string]: string } }[] = [];
 
             this.filters.forEach((filter) => {
                 if (filter.connector === 'OR') {
