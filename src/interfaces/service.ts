@@ -1,3 +1,4 @@
+import { Criteria } from '../lib/criteria/criteria';
 export interface CRUD<Primitives> {
     /**
      * Insert into the database the following object passed by parameters.
@@ -7,20 +8,29 @@ export interface CRUD<Primitives> {
     create(object: Primitives): Promise<Primitives>;
 
     /**
-     * List one or more objects from the database that matches the query parameters.
+     * Get one or more objects from the database who matches the criteria.
+     *
      * @param queryParameters
      */
-    read(queryParameters: any): Promise<Primitives[]>;
+    getByCriteria(queryParameters: Criteria): Promise<Primitives[]>;
 
     /**
-     * Update the object from the database that matches the object primitives.
+     * Get one object from the database by id.
      *
+     * @param id
+     */
+    getById(id: number): Promise<Primitives | null>;
+
+    /**
+     * Update an object from the database that matches the object primitives.
+     *
+     * @param id
      * @param modifiedObject
      */
-    update(modifiedObject: Primitives): Promise<void>;
+    update(modifiedObject: Primitives): Promise<Primitives>;
 
     /**
-     * Delete the field that matches the id in the parameters from the database.
+     * Delete the object who matches the given id.
      * @param id
      */
     delete(id: number): Promise<Primitives>;
