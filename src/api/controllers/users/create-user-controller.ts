@@ -5,6 +5,7 @@ import httpStatus from 'http-status';
 import { UserCreatorValidator } from '../../validators/users/user-creator-validator';
 import { UserModel } from '../../models/user-model';
 import { User } from '@prisma/client';
+import { ValidationParameters } from '../../../interfaces/validation-parameters';
 
 export class CreateUserController implements Controller {
     /**
@@ -14,14 +15,19 @@ export class CreateUserController implements Controller {
      * @returns
      */
     public async run(request: Request, response: Response): Promise<void> {
-        // Validate the body parameters
-        await new UserCreatorValidator().validate(request.body);
+        // Generate the validation parameters
+        const validationParams: ValidationParameters<User> = {
+            object: request.body,
+        };
+
+        // Validate the creation
+        await new UserCreatorValidator().validate(validationParams);
 
         // Create the user model
-        const user: User = new UserModel(request.body);
+        const user = new UserModel(request.body);
 
         // Insert into the database
-        await new UsersService().create(user);
+        await new UsersService().create(user.fromModelToPrisma());
 
         // Return the response
         response.status(httpStatus.OK).send();

@@ -5,15 +5,15 @@ import httpStatus from 'http-status';
 import { Controller } from '../../../interfaces/controller';
 import { Criteria } from '../../../lib/criteria/criteria';
 
-export class GetUsersController implements Controller {
+export class GetUsersByCriteriaController implements Controller {
     public async run(request: Request, response: Response): Promise<void> {
         // Generate the criteria from the request body
         const criteria: Criteria = Criteria.fromBodyParameters(request.body);
 
         // Call the service to insert into the database
-        const users: User[] = await new UsersService().read(criteria.parseCriteriaToPrisma());
+        const users: User[] = await new UsersService().getByCriteria(criteria);
 
         // Return the response
-        response.status(httpStatus.OK).send(users);
+        response.status(httpStatus.OK).send({ result: true, list: users });
     }
 }
