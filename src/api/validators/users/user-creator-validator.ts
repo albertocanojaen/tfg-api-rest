@@ -1,64 +1,73 @@
-import { Validator } from '../../../interfaces/validator';
 import { User } from '@prisma/client';
-import PrismaHandler from '../../../lib/prisma-handler';
+import { UserValidator } from '../user-validator';
+import { ValidationParameters } from '../../../interfaces/validation-parameters';
+import { Criteria } from '../../../lib/criteria/criteria';
+import { Filters } from '../../../lib/criteria/filters';
+import { Order } from '../../../lib/criteria/order';
+import UsersService from '../../services/users-service';
 import { EmailAlreadyInUse } from '../../../exceptions/users/email-already-in-use';
-import { EmailIsEmpty } from '../../../exceptions/users/email-is-empty';
-import { PasswordIsEmpty } from '../../../exceptions/users/password-is-empty';
-import { Passwords } from '../../../lib/password';
-import { PasswordIsNotSecure } from '../../../exceptions/users/password-is-not-secure';
 
-export class UserCreatorValidator implements Validator<User> {
+export class UserCreatorValidator extends UserValidator {
     /**
      * Validate the user primitives
      *
      * @param primitives
      */
 
-    async validate(primitives: User): Promise<void> {
-        await this.isEmailInUse(primitives?.email);
-        await this.isPasswordSecure(primitives?.password);
+    public override async validate(primitives: ValidationParameters<User>): Promise<void> {
+        // Call the parent validation
+        await super.validate(primitives);
+
+        // Ensure the user object is defined
+        this._ensureUserObjectIsDefined(primitives);
+
+        // Ensure the email for creation is not used by another user
+        await this._ensureEmailIsNotBeingUsedByAnotherUser(primitives.object!);
     }
 
     /**
-     * Determines if the email is already in use
-     *
-     * @param email
+     * Ensure the object to create is defined
+     * @param object
+     * @returns
      */
-    private async isEmailInUse(email: string): Promise<void> {
-        // Check if the email is empty
-        if (!email) {
-            throw new EmailIsEmpty();
-        }
-
-        // Check if the email exists
-        const user = await PrismaHandler.client.user.findUnique({
-            where: {
-                email: email,
-            },
-        });
-
-        console.log(user);
-
-        // Check if the user exists
-        if (user) {
-            throw new EmailAlreadyInUse();
+    private _ensureUserObjectIsDefined(primitives: ValidationParameters<User>): void {
+        // Check if the user to insert is not defined
+        if (!primitives.object) {
+            throw new Error();
         }
     }
 
     /**
-     * Determines if the password matches the defined RegEx
-     *
-     * @param password
+     * Ensure the email for creation is not used by another user
+     * @param object
+     * @returns
      */
-    private async isPasswordSecure(password: string): Promise<void> {
-        // Check if the password is empty
-        if (!password) {
-            throw new PasswordIsEmpty();
+    private async _ensureEmailIsNotBeingUsedByAnotherUser(object: User): Promise<void> {
+        // Generate the criteria
+        const criteria = new Criteria(
+            Filters.fromValues([
+                {
+                    connector: 'AND',
+                    field: 'email',
+                    operator: 'equals',
+                    value: object.email,
+                },
+            ]),
+            Order.defaultOrder()
+        );
+
+        // Search the users with the received email
+        const response = await new UsersService().getByCriteria(criteria);
+
+        console.log(response);
+
+        // Check if the response is empty
+        if (!response || !response.length) {
+            // Cut the execution
+            return;
         }
 
-        // Check if password match the RegEx
-        if (!Passwords.regex.test(password)) {
-            throw new PasswordIsNotSecure();
-        }
+        // Throw an error
+        throw new EmailAlreadyInUse(object.email);
     }
 }
