@@ -1,9 +1,10 @@
-import { Passwords } from '../../lib/password';
+import { IUser } from '../interfaces/user';
+import { Passwords } from '../lib/password';
 import { User } from '@prisma/client';
 
-export class UserModel {
+export class UserModel implements IUser {
     public id?: number;
-    public name?: string | null;
+    public name?: string;
     public password?: string;
     public email?: string;
     public createdAt?: Date;
@@ -13,7 +14,7 @@ export class UserModel {
      *
      * @param args
      */
-    constructor(args: User) {
+    constructor(args: IUser) {
         this.id = args?.id;
         this.name = args?.name ? args.name : '';
         this.password = args?.password ? Passwords.encrypt(args.password) : '';
@@ -21,7 +22,12 @@ export class UserModel {
         this.createdAt = args?.createdAt ? args.createdAt : new Date();
     }
 
-    public fromModelToPrisma() {
+    /**
+     * Parse the user from the User Model to the Prisma Model
+     *
+     * @returns User
+     */
+    public fromModelToPrisma(): User {
         return {
             id: this.id!,
             name: this.name!,
@@ -31,17 +37,17 @@ export class UserModel {
         };
     }
 
-    public static fromPrismaToModel(args: User | null): UserModel | null {
+    public static fromPrismaToModel(args: User | null): UserModel {
         if (args) {
             return new UserModel({
                 id: args?.id,
-                name: args?.name,
+                name: args?.name ? args.name : '',
                 email: args?.email,
                 password: args?.password,
                 createdAt: args?.createdAt,
             });
         }
 
-        return null;
+        return new UserModel({});
     }
 }

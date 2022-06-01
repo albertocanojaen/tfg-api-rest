@@ -1,10 +1,10 @@
 import { Routing } from '../../lib/routing';
 import { Request, Response, Router, NextFunction } from 'express';
-import { CreateUserController } from '../controllers/users/create-user-controller';
-import { GetUsersByCriteriaController } from '../controllers/users/get-users-by-criteria-controller';
-import { DeleteUserController } from '../controllers/users/delete-user-controller';
-import { GetUserByIdController } from '../controllers/users/get-user-by-id-controller';
-import { UpdateUserController } from '../controllers/users/update-user-controller';
+import { getUserByIdController } from './controllers/get-user-by-id-controller';
+import { deleteUserController } from './controllers/delete-user-controller';
+import { updateUserController } from './controllers/update-user-controller';
+import { getUsersByCriteriaController } from './controllers/get-users-by-criteria-controller';
+import { createUserController } from './controllers/create-user-controller';
 
 export class UsersRoutes extends Routing {
     constructor(router: Router) {
@@ -21,7 +21,7 @@ export class UsersRoutes extends Routing {
          */
         this.router.post('/user', async (req: Request, res: Response, next: NextFunction) => {
             try {
-                await new CreateUserController().run(req, res);
+                await createUserController.run(req, res);
             } catch (error) {
                 return next(error);
             }
@@ -33,7 +33,7 @@ export class UsersRoutes extends Routing {
          */
         this.router.get('/user/:id', async (req: Request, res: Response, next: NextFunction) => {
             try {
-                await new GetUserByIdController().run(req, res);
+                await getUserByIdController.run(req, res);
             } catch (error) {
                 return next(error);
             }
@@ -45,7 +45,7 @@ export class UsersRoutes extends Routing {
          */
         this.router.post('/user/:id', async (req: Request, res: Response, next: NextFunction) => {
             try {
-                await new UpdateUserController().run(req, res);
+                await updateUserController.run(req, res);
             } catch (error) {
                 return next(error);
             }
@@ -57,7 +57,7 @@ export class UsersRoutes extends Routing {
          */
         this.router.delete('/user/:id', async (req: Request, res: Response, next: NextFunction) => {
             try {
-                await new DeleteUserController().run(req, res);
+                await deleteUserController.run(req, res);
             } catch (error) {
                 return next(error);
             }
@@ -72,7 +72,7 @@ export class UsersRoutes extends Routing {
              * 5. Get all the users by criteria
              */
             try {
-                await new GetUsersByCriteriaController().run(req, res);
+                await getUsersByCriteriaController.run(req, res);
             } catch (error) {
                 return next(error);
             }

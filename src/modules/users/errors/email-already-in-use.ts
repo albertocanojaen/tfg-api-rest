@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../invalid-argument-error';
+import { InvalidArgumentError } from '../../../exceptions/invalid-argument-error';
 import httpStatus from 'http-status';
 
 export class EmailAlreadyInUse extends InvalidArgumentError {

@@ -3,11 +3,20 @@ import { ValidationParameters } from '../../../interfaces/validation-parameters'
 import { Criteria } from '../../../lib/criteria/criteria';
 import { Filters } from '../../../lib/criteria/filters';
 import { Order } from '../../../lib/criteria/order';
-import UsersService from '../../services/users-service';
-import { UserValidator } from '../user-validator';
-import { UserNotExists } from '../../../exceptions/users/user-not-exists';
+import { usersRepository } from '../repository/users-repository';
+import { UsersValidator } from '../users-validator';
+import { UserNotExists } from '../errors/user-not-exists';
+import { CRUD } from '../../../interfaces/service';
 
-export class UserEraserValidator extends UserValidator {
+export class UserEraserValidator extends UsersValidator {
+    /**
+     * Class constructor
+     * @param _userRepository
+     */
+    constructor(private _userRepository: CRUD<User>) {
+        super();
+    }
+
     public override async validate(parameters: ValidationParameters<User>): Promise<void> {
         // Call the parent validation
         await super.validate(parameters);
@@ -31,7 +40,7 @@ export class UserEraserValidator extends UserValidator {
         );
 
         // Search the users with the received identifier
-        const response = await new UsersService().getByCriteria(criteria);
+        const response = await this._userRepository.getByCriteria(criteria);
 
         // Check if the user not exists
         if (!response || !response.length) {
@@ -39,3 +48,7 @@ export class UserEraserValidator extends UserValidator {
         }
     }
 }
+
+const userEraserValidator = new UserEraserValidator(usersRepository);
+
+export { userEraserValidator };

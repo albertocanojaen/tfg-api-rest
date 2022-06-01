@@ -1,9 +1,9 @@
-import PrismaHandler from '../../lib/prisma-handler';
+import PrismaHandler from '../../../lib/prisma-handler';
 import { User } from '@prisma/client';
-import { CRUD } from '../../interfaces/service';
-import { Criteria } from '../../lib/criteria/criteria';
+import { CRUD } from '../../../interfaces/service';
+import { Criteria } from '../../../lib/criteria/criteria';
 
-class UsersService implements CRUD<User> {
+class UsersRepository implements CRUD<User> {
     /**
      * Create a new user in the database
      *
@@ -75,4 +75,8 @@ class UsersService implements CRUD<User> {
     }
 }
 
-export default UsersService;
+// Instantiate the users repository
+const usersRepository = new UsersRepository();
+
+// Export the instance
+export { usersRepository };

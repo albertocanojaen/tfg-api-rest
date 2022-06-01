@@ -1,5 +1,5 @@
-import { InvalidArgumentError } from '../invalid-argument-error';
 import httpStatus from 'http-status';
+import { InvalidArgumentError } from '../../../exceptions/invalid-argument-error';
 
 export class EmailIsEmpty extends InvalidArgumentError {
     public statusCode = httpStatus.BAD_REQUEST;

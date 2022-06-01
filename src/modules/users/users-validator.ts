@@ -2,7 +2,7 @@ import { User } from '@prisma/client';
 import { Validator } from '../../interfaces/validator';
 import { ValidationParameters } from '../../interfaces/validation-parameters';
 
-export class UserValidator implements Validator<User> {
+export class UsersValidator implements Validator<User> {
     /**
      * Validate the received primitives
      *

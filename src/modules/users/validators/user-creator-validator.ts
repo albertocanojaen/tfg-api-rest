@@ -1,13 +1,23 @@
 import { User } from '@prisma/client';
-import { UserValidator } from '../user-validator';
+import { UsersValidator } from '../users-validator';
 import { ValidationParameters } from '../../../interfaces/validation-parameters';
 import { Criteria } from '../../../lib/criteria/criteria';
 import { Filters } from '../../../lib/criteria/filters';
 import { Order } from '../../../lib/criteria/order';
-import UsersService from '../../services/users-service';
-import { EmailAlreadyInUse } from '../../../exceptions/users/email-already-in-use';
+import { EmailAlreadyInUse } from '../errors/email-already-in-use';
+import { CRUD } from '../../../interfaces/service';
+import { usersRepository } from '../repository/users-repository';
 
-export class UserCreatorValidator extends UserValidator {
+class UserCreatorValidator extends UsersValidator {
+    /**
+     * Class constructor
+     * @param _userRepository
+     */
+    constructor(private _userRepository: CRUD<User>) {
+        // Call the parent constructor
+        super();
+    }
+
     /**
      * Validate the user primitives
      *
@@ -27,8 +37,7 @@ export class UserCreatorValidator extends UserValidator {
 
     /**
      * Ensure the object to create is defined
-     * @param object
-     * @returns
+     * @param primitives
      */
     private _ensureUserObjectIsDefined(primitives: ValidationParameters<User>): void {
         // Check if the user to insert is not defined
@@ -40,7 +49,6 @@ export class UserCreatorValidator extends UserValidator {
     /**
      * Ensure the email for creation is not used by another user
      * @param object
-     * @returns
      */
     private async _ensureEmailIsNotBeingUsedByAnotherUser(object: User): Promise<void> {
         // Generate the criteria
@@ -57,7 +65,7 @@ export class UserCreatorValidator extends UserValidator {
         );
 
         // Search the users with the received email
-        const response = await new UsersService().getByCriteria(criteria);
+        const response = await this._userRepository.getByCriteria(criteria);
 
         console.log(response);
 
@@ -71,3 +79,9 @@ export class UserCreatorValidator extends UserValidator {
         throw new EmailAlreadyInUse(object.email);
     }
 }
+
+// Instantiate the user creator validator
+const userCreatorValidator = new UserCreatorValidator(usersRepository);
+
+// Export the instance
+export { userCreatorValidator };

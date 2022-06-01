@@ -3,11 +3,21 @@ import { ValidationParameters } from '../../../interfaces/validation-parameters'
 import { Criteria } from '../../../lib/criteria/criteria';
 import { Filters } from '../../../lib/criteria/filters';
 import { Order } from '../../../lib/criteria/order';
-import UsersService from '../../services/users-service';
-import { UserValidator } from '../user-validator';
-import { EmailAlreadyInUse } from '../../../exceptions/users/email-already-in-use';
+import { usersRepository } from '../repository/users-repository';
+import { UsersValidator } from '../users-validator';
+import { EmailAlreadyInUse } from '../errors/email-already-in-use';
+import { CRUD } from '../../../interfaces/service';
 
-export class UserUpdaterValidator extends UserValidator {
+export class UserUpdaterValidator extends UsersValidator {
+    /**
+     * Class constructor
+     * @param _userRepository
+     */
+    constructor(private _userRepository: CRUD<User>) {
+        // Call the parent constructor
+        super();
+    }
+
     public override async validate(parameters: ValidationParameters<User>): Promise<void> {
         // Call the parent validations
         await super.validate(parameters);
@@ -63,7 +73,7 @@ export class UserUpdaterValidator extends UserValidator {
         );
 
         // Search the users with the received email and distinct email
-        const response = await new UsersService().getByCriteria(criteria);
+        const response = await this._userRepository.getByCriteria(criteria);
 
         // Check if the response is empty
         if (!response.length) {
@@ -75,3 +85,9 @@ export class UserUpdaterValidator extends UserValidator {
         throw new EmailAlreadyInUse(parameters.object!.email);
     }
 }
+
+// Instantiate the user creator validator
+const userUpdaterValidator = new UserUpdaterValidator(usersRepository);
+
+// Export the instance
+export { userUpdaterValidator };

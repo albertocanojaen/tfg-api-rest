@@ -1,12 +1,21 @@
 import { Request, Response } from 'express';
-import UsersService from '../../services/users-service';
 import { Controller } from '../../../interfaces/controller';
 import httpStatus from 'http-status';
-import { UserModel } from '../../models/user-model';
-import { UserUpdaterValidator } from '../../validators/users/user-updater-validator';
+import { UserModel } from '../../../models/user';
+import { userUpdaterValidator } from '../validators/user-updater-validator';
+import { CRUD } from '../../../interfaces/service';
 import { User } from '@prisma/client';
+import { Validator } from '../../../interfaces/validator';
+import { usersRepository } from '../repository/users-repository';
 
 export class UpdateUserController implements Controller {
+    /**
+     * Class constructor
+     * @param _userRepository
+     * @param _userValidator
+     */
+    constructor(private _userRepository: CRUD<User>, private _userValidator: Validator<User>) {}
+
     /**
      * Execute the use case
      * @param request
@@ -18,21 +27,25 @@ export class UpdateUserController implements Controller {
         const userId = Number(request.params.id);
 
         // Validate the update
-        await new UserUpdaterValidator().validate({
+        await this._userValidator.validate({
             id: userId,
             object: request.body,
         });
 
         // Get the user form the database
-        let savedUser = await new UsersService().getById(userId);
+        let savedUser = await this._userRepository.getById(userId);
 
         // Get the user data from the database
         const user = Object.assign(UserModel.fromPrismaToModel(savedUser)!, request.body);
 
         // Insert into the database
-        await new UsersService().update(user.fromModelToPrisma());
+        await this._userRepository.update(user.fromModelToPrisma());
 
         // Return the response
         response.status(httpStatus.OK).send();
     }
 }
+
+const updateUserController = new UpdateUserController(usersRepository, userUpdaterValidator);
+
+export { updateUserController };
