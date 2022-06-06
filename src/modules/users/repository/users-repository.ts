@@ -7,27 +7,27 @@ class UsersRepository implements CRUD<User> {
     /**
      * Create a new user in the database
      *
-     * @param args
+     * @param object
      */
-    public async create(args: User): Promise<User> {
+    public async create(object: User): Promise<User> {
         return await PrismaHandler.client.user.create({
-            data: args,
+            data: object,
         });
     }
 
     /**
      * Get the users from the database by criteria.
      *
-     * @param queryParameters
+     * @param parameters
      */
-    public async getByCriteria(queryParameters: Criteria): Promise<User[]> {
+    public async getByCriteria(parameters: Criteria): Promise<User[]> {
         // Generate the Prisma query parameters
         let prismaQueryParameters = {};
 
         // If the parameters are not empty
-        if (queryParameters) {
+        if (parameters) {
             // Get the parameters readable for Prisma
-            prismaQueryParameters = queryParameters.parseCriteriaToPrisma();
+            prismaQueryParameters = parameters.parseCriteriaToPrisma();
         }
 
         // Make the query
@@ -50,14 +50,14 @@ class UsersRepository implements CRUD<User> {
     /**
      * Update a user from the database.
      *
-     * @param id
+     * @param object
      */
-    async update(modifiedObject: User): Promise<User> {
+    public async update(object: User): Promise<User> {
         return await PrismaHandler.client.user.update({
             where: {
-                id: modifiedObject.id,
+                id: object.id,
             },
-            data: modifiedObject,
+            data: object,
         });
     }
 
