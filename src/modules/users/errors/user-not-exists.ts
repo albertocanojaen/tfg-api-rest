@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import { InvalidArgumentError } from '../../../exceptions/invalid-argument-error';
+import { InvalidArgumentError } from '../../../lib/exceptions/invalid-argument-error';
 
 export class UserNotExists extends InvalidArgumentError {
     public statusCode = httpStatus.NOT_FOUND;

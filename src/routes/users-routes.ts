@@ -1,10 +1,11 @@
-import { Routing } from '../lib/routing';
+import { Routing } from '../lib/routing/routing';
 import { Request, Response, Router, NextFunction } from 'express';
 import { getUserByIdController } from '../modules/users/controllers/get-user-by-id-controller';
 import { deleteUserController } from '../modules/users/controllers/delete-user-controller';
 import { updateUserController } from '../modules/users/controllers/update-user-controller';
 import { getUsersByCriteriaController } from '../modules/users/controllers/get-users-by-criteria-controller';
 import { createUserController } from '../modules/users/controllers/create-user-controller';
+import { authenticationTokenValidator } from '../middlewares/authentication-token-validator';
 
 export class UsersRoutes extends Routing {
     constructor(router: Router) {

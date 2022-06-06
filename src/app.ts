@@ -4,10 +4,10 @@ import http from 'http';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import httpStatus from 'http-status';
-import registerRoutes from './routes';
-import Logger from './lib/logger';
 import { Request, Response, NextFunction } from 'express';
-import { InvalidArgumentError } from './exceptions/invalid-argument-error';
+import Logger from './lib/logger';
+import registerRoutes from './routes';
+import { InvalidArgumentError } from './lib/exceptions/invalid-argument-error';
 
 export default class App {
     /**
@@ -47,7 +47,7 @@ export default class App {
      * Register the routes
      */
     private routes(): void {
-        // Register all the routes defined on routes.ts
+        // Register all the public routes defined
         registerRoutes(this.router);
 
         // Use the router

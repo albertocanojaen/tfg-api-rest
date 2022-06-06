@@ -1,4 +1,4 @@
-import PrismaHandler from '../../../lib/prisma-handler';
+import PrismaHandler from '../../../lib/prisma/prisma-handler';
 import { User } from '@prisma/client';
 import { CRUD } from '../../../interfaces/service';
 import { Criteria } from '../../../lib/criteria/criteria';

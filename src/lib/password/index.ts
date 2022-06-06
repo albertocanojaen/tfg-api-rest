@@ -1,5 +1,5 @@
 import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
-import { PasswordIsEmpty } from '../modules/users/errors/password-is-empty';
+import { PasswordIsEmpty } from '../../modules/users/errors/password-is-empty';
 /**
  * The regular expression to check the password validity
  */

@@ -1,11 +1,11 @@
 import httpStatus from 'http-status';
 import { InvalidArgumentError } from '../../../lib/exceptions/invalid-argument-error';
 
-export class EmailIsEmpty extends InvalidArgumentError {
+export class InvalidCredentialsError extends InvalidArgumentError {
     public statusCode = httpStatus.BAD_REQUEST;
 
     constructor() {
         super();
-        this.message = 'The email is empty';
+        this.message = `The received credentials are not valid`;
     }
 }
