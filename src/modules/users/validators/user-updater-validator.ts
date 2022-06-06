@@ -4,23 +4,21 @@ import { Criteria } from '../../../lib/criteria/criteria';
 import { Filters } from '../../../lib/criteria/filters';
 import { Order } from '../../../lib/criteria/order';
 import { usersRepository } from '../repository/users-repository';
-import { UsersValidator } from '../users-validator';
+import { usersValidator, UsersValidator } from './users-validator';
 import { EmailAlreadyInUse } from '../errors/email-already-in-use';
 import { CRUD } from '../../../interfaces/service';
+import { Validator } from '../../../interfaces/validator';
 
-export class UserUpdaterValidator extends UsersValidator {
+export class UserUpdaterValidator implements Validator<User> {
     /**
      * Class constructor
      * @param _userRepository
      */
-    constructor(private _userRepository: CRUD<User>) {
-        // Call the parent constructor
-        super();
-    }
+    constructor(private _userRepository: CRUD<User>, private _usersValidator: Validator<User>) {}
 
-    public override async validate(parameters: ValidationParameters<User>): Promise<void> {
+    public async validate(parameters: ValidationParameters<User>): Promise<void> {
         // Call the parent validations
-        await super.validate(parameters);
+        await this._usersValidator.validate(parameters);
 
         // Ensure the user object and identifier are defined
         this._ensureObjectAndIdentifierAreDefined(parameters);
@@ -87,7 +85,7 @@ export class UserUpdaterValidator extends UsersValidator {
 }
 
 // Instantiate the user creator validator
-const userUpdaterValidator = new UserUpdaterValidator(usersRepository);
+const userUpdaterValidator = new UserUpdaterValidator(usersRepository, usersValidator);
 
 // Export the instance
 export { userUpdaterValidator };

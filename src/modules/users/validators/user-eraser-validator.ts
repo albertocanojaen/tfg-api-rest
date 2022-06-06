@@ -4,22 +4,21 @@ import { Criteria } from '../../../lib/criteria/criteria';
 import { Filters } from '../../../lib/criteria/filters';
 import { Order } from '../../../lib/criteria/order';
 import { usersRepository } from '../repository/users-repository';
-import { UsersValidator } from '../users-validator';
+import { usersValidator } from './users-validator';
 import { UserNotExists } from '../errors/user-not-exists';
 import { CRUD } from '../../../interfaces/service';
+import { Validator } from '../../../interfaces/validator';
 
-export class UserEraserValidator extends UsersValidator {
+export class UserEraserValidator implements Validator<User> {
     /**
      * Class constructor
      * @param _userRepository
      */
-    constructor(private _userRepository: CRUD<User>) {
-        super();
-    }
+    constructor(private _userRepository: CRUD<User>, private _usersValidator: Validator<User>) {}
 
-    public override async validate(parameters: ValidationParameters<User>): Promise<void> {
+    public async validate(parameters: ValidationParameters<User>): Promise<void> {
         // Call the parent validation
-        await super.validate(parameters);
+        await this._usersValidator.validate(parameters);
 
         // Ensure user to delete exists
         await this._ensureUserToDeleteExists(parameters.id!);
@@ -49,6 +48,6 @@ export class UserEraserValidator extends UsersValidator {
     }
 }
 
-const userEraserValidator = new UserEraserValidator(usersRepository);
+const userEraserValidator = new UserEraserValidator(usersRepository, usersValidator);
 
 export { userEraserValidator };

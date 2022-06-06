@@ -1,5 +1,4 @@
 import { User } from '@prisma/client';
-import { UsersValidator } from '../users-validator';
 import { ValidationParameters } from '../../../interfaces/validation-parameters';
 import { Criteria } from '../../../lib/criteria/criteria';
 import { Filters } from '../../../lib/criteria/filters';
@@ -7,16 +6,15 @@ import { Order } from '../../../lib/criteria/order';
 import { EmailAlreadyInUse } from '../errors/email-already-in-use';
 import { CRUD } from '../../../interfaces/service';
 import { usersRepository } from '../repository/users-repository';
+import { Validator } from '../../../interfaces/validator';
+import { usersValidator } from './users-validator';
 
-class UserCreatorValidator extends UsersValidator {
+class UserCreatorValidator implements Validator<User> {
     /**
      * Class constructor
      * @param _userRepository
      */
-    constructor(private _userRepository: CRUD<User>) {
-        // Call the parent constructor
-        super();
-    }
+    constructor(private _userRepository: CRUD<User>) {}
 
     /**
      * Validate the user primitives
@@ -24,10 +22,7 @@ class UserCreatorValidator extends UsersValidator {
      * @param primitives
      */
 
-    public override async validate(primitives: ValidationParameters<User>): Promise<void> {
-        // Call the parent validation
-        await super.validate(primitives);
-
+    public async validate(primitives: ValidationParameters<User>): Promise<void> {
         // Ensure the user object is defined
         this._ensureUserObjectIsDefined(primitives);
 
