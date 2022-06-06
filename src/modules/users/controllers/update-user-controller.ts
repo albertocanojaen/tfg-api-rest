@@ -7,6 +7,7 @@ import { CRUD } from '../../../interfaces/service';
 import { User } from '@prisma/client';
 import { Validator } from '../../../interfaces/validator';
 import { usersRepository } from '../repository/users-repository';
+import { Passwords } from '../../../lib/password';
 
 export class UpdateUserController implements Controller {
     /**
@@ -26,7 +27,7 @@ export class UpdateUserController implements Controller {
         // Parse the identifier to a number
         const userId = Number(request.params.id);
 
-        // Validate the update
+        // Validate for update
         await this._userValidator.validate({
             id: userId,
             object: request.body,
@@ -35,8 +36,8 @@ export class UpdateUserController implements Controller {
         // Get the user form the database
         let savedUser = await this._userRepository.getById(userId);
 
-        // Get the user data from the database
-        const user = Object.assign(UserModel.fromPrismaToModel(savedUser)!, request.body);
+        // Merge the repository user with the modified fields
+        const user = Object.assign<UserModel, User>(UserModel.fromPrismaToModel(savedUser)!, request.body);
 
         // Insert into the database
         await this._userRepository.update(user.fromModelToPrisma());

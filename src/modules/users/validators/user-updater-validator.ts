@@ -8,35 +8,25 @@ import { usersValidator, UsersValidator } from './users-validator';
 import { EmailAlreadyInUse } from '../errors/email-already-in-use';
 import { CRUD } from '../../../interfaces/service';
 import { Validator } from '../../../interfaces/validator';
+import { Passwords } from '../../../lib/password';
 
 export class UserUpdaterValidator implements Validator<User> {
     /**
      * Class constructor
-     * @param _userRepository
+     * @param _userRepository the repository
+     * @param _usersValidator the user global validator
      */
     constructor(private _userRepository: CRUD<User>, private _usersValidator: Validator<User>) {}
 
     public async validate(parameters: ValidationParameters<User>): Promise<void> {
-        // Call the parent validations
+        // Call the global user validator
         await this._usersValidator.validate(parameters);
-
-        // Ensure the user object and identifier are defined
-        this._ensureObjectAndIdentifierAreDefined(parameters);
 
         // Ensure the updated email is not used by another distributor
         await this._ensureUpdatedEmailIsNotUsedByAnotherUser(parameters);
-    }
 
-    /**
-     * Determines if the validation parameters are valid
-     *
-     * @param parameters
-     */
-    private _ensureObjectAndIdentifierAreDefined(parameters: ValidationParameters<User>): void {
-        // Check if the validation parameters are defined
-        if (!parameters.id || !parameters) {
-            throw new Error();
-        }
+        // Ensure the password is encrypted
+        await this._ensurePasswordIsEncrypted(parameters);
     }
 
     /**
@@ -81,6 +71,28 @@ export class UserUpdaterValidator implements Validator<User> {
 
         // Throw an error
         throw new EmailAlreadyInUse(parameters.object!.email);
+    }
+
+    /**
+     * Determines if the given password is encrypted if its not encrypt it
+     *
+     * @param parameters
+     */
+    private async _ensurePasswordIsEncrypted(parameters: ValidationParameters<User>): Promise<void> {
+        // Check if the password is not updated
+        if (!parameters.object?.password) {
+            // Cut the execution
+            return;
+        }
+
+        // Check if the password is encrypted
+        if (Passwords.isEncrypted(parameters.object.password)) {
+            // Cut the execution
+            return;
+        }
+
+        // Encrypt it if its not encrypted
+        parameters.object.password = Passwords.encrypt(parameters.object.password);
     }
 }
 
