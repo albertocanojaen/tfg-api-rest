@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { UsersRoutes } from './modules/users/users-routes';
+import { UsersRoutes } from './routes/users-routes';
 
 /**
  * Register all the selected roots into the application

@@ -1,10 +1,10 @@
-import { Routing } from '../../lib/routing';
+import { Routing } from '../lib/routing';
 import { Request, Response, Router, NextFunction } from 'express';
-import { getUserByIdController } from './controllers/get-user-by-id-controller';
-import { deleteUserController } from './controllers/delete-user-controller';
-import { updateUserController } from './controllers/update-user-controller';
-import { getUsersByCriteriaController } from './controllers/get-users-by-criteria-controller';
-import { createUserController } from './controllers/create-user-controller';
+import { getUserByIdController } from '../modules/users/controllers/get-user-by-id-controller';
+import { deleteUserController } from '../modules/users/controllers/delete-user-controller';
+import { updateUserController } from '../modules/users/controllers/update-user-controller';
+import { getUsersByCriteriaController } from '../modules/users/controllers/get-users-by-criteria-controller';
+import { createUserController } from '../modules/users/controllers/create-user-controller';
 
 export class UsersRoutes extends Routing {
     constructor(router: Router) {
