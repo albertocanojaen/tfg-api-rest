@@ -1,6 +1,6 @@
-import { OrderInterface } from '../../interfaces/criteria/order-interface';
-import { InvalidOrderFormat } from '../exceptions/criteria/invalid-order';
-import { OrderMaxLength } from '../exceptions/criteria/order-max-length';
+import { OrderInterface } from '../interfaces/order-interface';
+import { InvalidOrderFormat } from '../errors/invalid-order';
+import { OrderMaxLength } from '../errors/order-max-length';
 export class Order {
     /**
      * Class constructor

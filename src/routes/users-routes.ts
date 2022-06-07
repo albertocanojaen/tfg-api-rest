@@ -5,7 +5,6 @@ import { deleteUserController } from '../modules/users/controllers/delete-user-c
 import { updateUserController } from '../modules/users/controllers/update-user-controller';
 import { getUsersByCriteriaController } from '../modules/users/controllers/get-users-by-criteria-controller';
 import { createUserController } from '../modules/users/controllers/create-user-controller';
-import { authenticationTokenValidator } from '../middlewares/authentication-token-validator';
 
 export class UsersRoutes extends Routing {
     constructor(router: Router) {

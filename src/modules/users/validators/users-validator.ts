@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
-import { Validator } from '../../../interfaces/validator';
-import { ValidationParameters } from '../../../interfaces/validation-parameters';
+import { Validator } from '../../../lib/validation/validator';
+import { ValidationParameters } from '../../../lib/validation/validation-parameters';
 
 export class UsersValidator implements Validator<User> {
     /**

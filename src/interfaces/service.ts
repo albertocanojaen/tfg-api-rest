@@ -1,4 +1,4 @@
-import { Criteria } from '../lib/criteria/criteria';
+import { Criteria } from '../lib/criteria/classes/criteria';
 export interface CRUD<Primitives> {
     /**
      * Insert into the database the following object passed by parameters.

@@ -1,6 +1,5 @@
 import * as http from 'http';
 import App from './app';
-import { AddressInfo } from 'net';
 import Environment from './environment/env';
 import { setGlobalEnvironment } from './global';
 import Logger from './lib/logger';

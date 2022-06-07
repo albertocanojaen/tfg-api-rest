@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import Logger from '../lib/logger';
 import { headersTokenExtractor } from '../lib/token/headers-token-extractor';
 
 /**

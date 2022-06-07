@@ -1,9 +1,9 @@
 import { TokenPrimitives } from './token-primitives';
 import { TokenArguments } from './token-arguments';
 import { sign, TokenExpiredError as JWTExpiredError, verify } from 'jsonwebtoken';
-import { TokenIsEmptyError } from '../exceptions/token/token-is-empty';
-import { TokenExpiredError } from '../exceptions/token/token-expired';
-import { TokenMalformedError } from '../exceptions/token/token-malformed';
+import { TokenIsEmptyError } from './errors/token-is-empty';
+import { TokenExpiredError } from './errors/token-expired';
+import { TokenMalformedError } from './errors/token-malformed';
 
 interface EncodingOptions {
     /**

@@ -1,5 +1,5 @@
 import { OrderInterface } from './order-interface';
-import { Filter } from '../../lib/criteria/filter';
+import { Filter } from '../classes/filter';
 
 export interface CriteriaInterface {
     filters: Filter[];

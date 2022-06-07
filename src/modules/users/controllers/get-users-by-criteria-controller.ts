@@ -3,7 +3,7 @@ import { usersRepository } from '../repository/users-repository';
 import { User } from '@prisma/client';
 import httpStatus from 'http-status';
 import { Controller } from '../../../interfaces/controller';
-import { Criteria } from '../../../lib/criteria/criteria';
+import { Criteria } from '../../../lib/criteria/classes/criteria';
 import { CRUD } from '../../../interfaces/service';
 
 export class GetUsersByCriteriaController implements Controller {

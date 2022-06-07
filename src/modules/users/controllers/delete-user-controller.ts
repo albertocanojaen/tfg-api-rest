@@ -2,10 +2,10 @@ import { Request, Response } from 'express';
 import { usersRepository } from '../repository/users-repository';
 import { Controller } from '../../../interfaces/controller';
 import httpStatus from 'http-status';
-import { userEraserValidator, UserEraserValidator } from '../validators/user-eraser-validator';
+import { userEraserValidator } from '../validators/user-eraser-validator';
 import { CRUD } from '../../../interfaces/service';
 import { User } from '@prisma/client';
-import { Validator } from '../../../interfaces/validator';
+import { Validator } from '../../../lib/validation/validator';
 
 export class DeleteUserController implements Controller {
     /**

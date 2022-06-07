@@ -1,13 +1,13 @@
 import { User } from '@prisma/client';
-import { ValidationParameters } from '../../../interfaces/validation-parameters';
-import { Criteria } from '../../../lib/criteria/criteria';
-import { Filters } from '../../../lib/criteria/filters';
-import { Order } from '../../../lib/criteria/order';
+import { ValidationParameters } from '../../../lib/validation/validation-parameters';
+import { Criteria } from '../../../lib/criteria/classes/criteria';
+import { Filters } from '../../../lib/criteria/classes/filters';
+import { Order } from '../../../lib/criteria/classes/order';
 import { usersRepository } from '../repository/users-repository';
-import { usersValidator, UsersValidator } from './users-validator';
+import { usersValidator } from './users-validator';
 import { EmailAlreadyInUse } from '../errors/email-already-in-use';
 import { CRUD } from '../../../interfaces/service';
-import { Validator } from '../../../interfaces/validator';
+import { Validator } from '../../../lib/validation/validator';
 import { Passwords } from '../../../lib/password';
 
 export class UserUpdaterValidator implements Validator<User> {

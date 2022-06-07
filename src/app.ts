@@ -7,7 +7,7 @@ import httpStatus from 'http-status';
 import { Request, Response, NextFunction } from 'express';
 import Logger from './lib/logger';
 import registerRoutes from './routes';
-import { InvalidArgumentError } from './lib/exceptions/invalid-argument-error';
+import { InvalidArgumentError } from './lib/errors/invalid-argument-error';
 
 export default class App {
     /**

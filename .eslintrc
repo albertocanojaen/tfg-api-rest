@@ -1,7 +1,6 @@
 {
     "root": true,
     "parser": "@typescript-eslint/parser",
-    "no-non-null-assertion": false,
     "plugins": ["@typescript-eslint", "unused-imports"],
     "extends": ["eslint:recommended", "plugin:@typescript-eslint/eslint-recommended", "plugin:@typescript-eslint/recommended"],
     "rules": {

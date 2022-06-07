@@ -5,9 +5,8 @@ import { UserModel } from '../../../models/user';
 import { userUpdaterValidator } from '../validators/user-updater-validator';
 import { CRUD } from '../../../interfaces/service';
 import { User } from '@prisma/client';
-import { Validator } from '../../../interfaces/validator';
+import { Validator } from '../../../lib/validation/validator';
 import { usersRepository } from '../repository/users-repository';
-import { Passwords } from '../../../lib/password';
 
 export class UpdateUserController implements Controller {
     /**
@@ -34,7 +33,7 @@ export class UpdateUserController implements Controller {
         });
 
         // Get the user form the database
-        let savedUser = await this._userRepository.getById(userId);
+        const savedUser = await this._userRepository.getById(userId);
 
         // Merge the repository user with the modified fields
         const user = Object.assign<UserModel, User>(UserModel.fromPrismaToModel(savedUser)!, request.body);

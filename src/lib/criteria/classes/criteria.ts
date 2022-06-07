@@ -1,4 +1,4 @@
-import { CriteriaInterface } from '../../interfaces/criteria/criteria-interface';
+import { CriteriaInterface } from '../interfaces/criteria-interface';
 import { Filters } from './filters';
 import { Order } from './order';
 

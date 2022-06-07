@@ -1,5 +1,5 @@
-import { FilterInterface } from '../../interfaces/criteria/filter-interface';
-import { InvalidFilterFormat } from '../exceptions/criteria/invalid-filter-format';
+import { FilterInterface } from '../interfaces/filter-interface';
+import { InvalidFilterFormat } from '../errors/invalid-filter-format';
 
 export class Filter {
     /**

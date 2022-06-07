@@ -3,9 +3,9 @@ import { Controller } from '../../../interfaces/controller';
 import httpStatus from 'http-status';
 import { UserModel } from '../../../models/user';
 import { User } from '@prisma/client';
-import { ValidationParameters } from '../../../interfaces/validation-parameters';
+import { ValidationParameters } from '../../../lib/validation/validation-parameters';
 import { CRUD } from '../../../interfaces/service';
-import { Validator } from '../../../interfaces/validator';
+import { Validator } from '../../../lib/validation/validator';
 import { userCreatorValidator } from '../validators/user-creator-validator';
 import { usersRepository } from '../repository/users-repository';
 

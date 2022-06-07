@@ -41,7 +41,7 @@
     "scripts": {
         "dev": "ts-node-dev --respawn ./src/server.ts",
         "test": "jest",
-        "lint": "eslint . --ext .ts",
+        "lint": "eslint . --ext .ts --fix",
         "mysql:start": "docker build -t prisma-server ."
     },
     "repository": {
