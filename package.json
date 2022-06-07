@@ -11,7 +11,7 @@
         "crypto": "^1.0.1",
         "dotenv": "^16.0.1",
         "express": "^4.16.4",
-        "faker": "^6.6.6",
+        "faker": "^5.5.3",
         "helmet": "^5.0.2",
         "http-status": "^1.5.2",
         "http-status-code": "^2.1.0",

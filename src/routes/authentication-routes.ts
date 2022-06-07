@@ -2,6 +2,7 @@ import { Request, Response, Router, NextFunction } from 'express';
 import httpStatus from 'http-status';
 import { Routing } from '../lib/routing/routing';
 import { authenticateByEmailAndPasswordController } from '../modules/authentication/controllers/authenticate-by-email-and-password-controller';
+import { authenticateByTokenController } from '../modules/authentication/controllers/authenticate-by-token-controller';
 
 export class AuthenticationRoutes extends Routing {
     /**
@@ -17,9 +18,9 @@ export class AuthenticationRoutes extends Routing {
      */
     configureRoutes(): Router {
         /**
-         * 1. Log in (POST /login)
+         * (1) Log in (POST /auth/login)
          */
-        this.router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+        this.router.post('/auth/login', async (req: Request, res: Response, next: NextFunction) => {
             try {
                 await authenticateByEmailAndPasswordController.run(req, res);
             } catch (error) {
@@ -28,9 +29,20 @@ export class AuthenticationRoutes extends Routing {
         });
 
         /**
-         * 2. Log out (GET /login)
+         * (2) Regenerate token (POST /auth)
          */
-        this.router.get('/logout', async (req: Request, res: Response, next: NextFunction) => {
+        this.router.post('/auth', async (req: Request, res: Response, next: NextFunction) => {
+            try {
+                await authenticateByTokenController.run(req, res);
+            } catch (error) {
+                return next(error);
+            }
+        });
+
+        /**
+         * (3) Log out (GET /login)
+         */
+        this.router.get('/auth/logout', async (req: Request, res: Response, next: NextFunction) => {
             try {
                 // Return the response
                 res.status(httpStatus.OK).send();

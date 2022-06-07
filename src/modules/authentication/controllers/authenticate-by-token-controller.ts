@@ -12,8 +12,10 @@ import { AuthenticationByEmailAndPasswordPrimitives } from '../../../lib/authent
 import { Passwords } from '../../../lib/password';
 import { AuthenticationToken } from '../../../lib/authentication-token/authentication-token';
 import { AuthenticationTokenPrimitives } from '../../../lib/authentication-token/authentication-token-primitives';
+import { AuthenticationByTokenPrimitives } from '../../../lib/authentication-token/authentication-by-token-primitives';
+import Logger from '../../../lib/logger';
 
-class AuthenticateByEmailAndPasswordController implements Controller {
+class AuthenticateByTokenController implements Controller {
     /**
      * Class constructor
      * @param _repository
@@ -29,49 +31,27 @@ class AuthenticateByEmailAndPasswordController implements Controller {
      */
     public async run(request: Request, response: Response): Promise<void> {
         // Get the username and password form the body parameters
-        const primitives: AuthenticationByEmailAndPasswordPrimitives = {
-            email: request.body.email,
-            password: request.body.password,
+        const primitives: AuthenticationByTokenPrimitives = {
+            token: request.body.token,
         };
 
-        // Check if the received email or password are empty
-        if (!primitives.email || !primitives.password) {
+        // Check if the received token is empty
+        if (!primitives.token) {
             throw new InvalidCredentialsError();
         }
 
-        // Generate the criteria
-        const criteria = new Criteria(
-            Filters.fromValues([
-                {
-                    connector: 'AND',
-                    field: 'email',
-                    operator: 'equals',
-                    value: primitives.email,
-                },
-            ]),
-            Order.defaultOrder()
-        );
+        // Decode the given token
+        const token = await AuthenticationToken.fromEncoded<AuthenticationTokenPrimitives>(request.body.token, this._secretKey);
 
         // Search the user with the following criteria
-        const users = await this._repository.getByCriteria(criteria);
+        const user = await this._repository.getById(token.decoded.idUser);
 
         // Check if no users were found
-        this._ensureUserExists(users[0]);
+        this._ensureUserExists(user!);
 
-        // Check if the passwords matches
-        this._ensurePasswordsMatch(users[0], primitives);
-
-        // Generate the token
-        const token = await AuthenticationToken.fromPrimitives<AuthenticationTokenPrimitives>(
-            { idUser: users[0].id },
-            this._secretKey,
-            { expiresIn: '15m' }
-        );
-
-        // Return the response
+        // Return the decoded token
         response.status(httpStatus.OK).send({
-            user: users[0],
-            token: token.encoded,
+            token: token.decoded,
         });
     }
 
@@ -88,29 +68,10 @@ class AuthenticateByEmailAndPasswordController implements Controller {
         // Throw an error
         throw new InvalidCredentialsError();
     }
-
-    /**
-     * Ensure passwords match
-     * @param user
-     * @param primitives
-     */
-    private _ensurePasswordsMatch(user: User, primitives: AuthenticationByEmailAndPasswordPrimitives): void {
-        // Check if the passwords matches
-        if (Passwords.areEquals(user.password, primitives.password)) {
-            // Cut the execution
-            return;
-        }
-
-        // Throw an error
-        throw new InvalidCredentialsError();
-    }
 }
 
 // Instantiate the controller injecting the dependencies
-const authenticateByEmailAndPasswordController = new AuthenticateByEmailAndPasswordController(
-    usersRepository,
-    process.env.SECRET_KEY!
-);
+const authenticateByTokenController = new AuthenticateByTokenController(usersRepository, process.env.SECRET_KEY!);
 
 // Export the instance
-export { authenticateByEmailAndPasswordController };
+export { authenticateByTokenController };

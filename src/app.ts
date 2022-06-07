@@ -101,6 +101,7 @@ export default class App {
                 statusCode = error.statusCode;
             }
 
+            // Send the response with the status code and the error message
             response.status(statusCode).json(jsonError);
         });
 
