@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { Controller } from '../../../interfaces/controller';
+import { Controller } from '../../../lib/controller/controller';
 import httpStatus from 'http-status';
 import { User } from '@prisma/client';
-import { CRUD } from '../../../interfaces/service';
+import { CRUD } from '../../../lib/crud/crud';
 import { usersRepository } from '../../users/repository/users-repository';
 import { InvalidCredentialsError } from '../errors/invalid-credentials';
 import { Criteria } from '../../../lib/criteria/classes/criteria';

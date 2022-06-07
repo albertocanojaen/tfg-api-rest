@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { Controller } from '../../../interfaces/controller';
+import { Controller } from '../../../lib/controller/controller';
 import httpStatus from 'http-status';
-import { UserModel } from '../../../models/user';
+import { UserModel } from '../models/UserModel';
 import { User } from '@prisma/client';
 import { ValidationParameters } from '../../../lib/validation/validation-parameters';
-import { CRUD } from '../../../interfaces/service';
+import { CRUD } from '../../../lib/crud/crud';
 import { Validator } from '../../../lib/validation/validator';
 import { userCreatorValidator } from '../validators/user-creator-validator';
 import { usersRepository } from '../repository/users-repository';

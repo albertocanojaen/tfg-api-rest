@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { User } from '@prisma/client';
 import httpStatus from 'http-status';
-import { Controller } from '../../../interfaces/controller';
+import { Controller } from '../../../lib/controller/controller';
 import { IdentifierIsEmpty } from '../errors/identifier-is-empty';
-import { CRUD } from '../../../interfaces/service';
+import { CRUD } from '../../../lib/crud/crud';
 import { usersRepository } from '../repository/users-repository';
 
 class GetUserByIdController implements Controller {

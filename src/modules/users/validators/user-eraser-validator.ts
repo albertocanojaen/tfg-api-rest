@@ -6,7 +6,7 @@ import { Order } from '../../../lib/criteria/classes/order';
 import { usersRepository } from '../repository/users-repository';
 import { usersValidator } from './users-validator';
 import { UserNotExists } from '../errors/user-not-exists';
-import { CRUD } from '../../../interfaces/service';
+import { CRUD } from '../../../lib/crud/crud';
 import { Validator } from '../../../lib/validation/validator';
 
 export class UserEraserValidator implements Validator<User> {

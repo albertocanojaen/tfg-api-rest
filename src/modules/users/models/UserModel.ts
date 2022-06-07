@@ -1,5 +1,5 @@
-import { IUser } from '../interfaces/user';
-import { Passwords } from '../lib/password';
+import { IUser } from './IUser';
+import { Passwords } from '../../../lib/password';
 import { User } from '@prisma/client';
 
 export class UserModel implements IUser {

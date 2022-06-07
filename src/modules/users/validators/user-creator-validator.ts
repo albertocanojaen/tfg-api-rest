@@ -4,7 +4,7 @@ import { Criteria } from '../../../lib/criteria/classes/criteria';
 import { Filters } from '../../../lib/criteria/classes/filters';
 import { Order } from '../../../lib/criteria/classes/order';
 import { EmailAlreadyInUse } from '../errors/email-already-in-use';
-import { CRUD } from '../../../interfaces/service';
+import { CRUD } from '../../../lib/crud/crud';
 import { usersRepository } from '../repository/users-repository';
 import { Validator } from '../../../lib/validation/validator';
 

@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import { usersRepository } from '../repository/users-repository';
 import { User } from '@prisma/client';
 import httpStatus from 'http-status';
-import { Controller } from '../../../interfaces/controller';
+import { Controller } from '../../../lib/controller/controller';
 import { Criteria } from '../../../lib/criteria/classes/criteria';
-import { CRUD } from '../../../interfaces/service';
+import { CRUD } from '../../../lib/crud/crud';
 
 export class GetUsersByCriteriaController implements Controller {
     /**

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { usersRepository } from '../repository/users-repository';
-import { Controller } from '../../../interfaces/controller';
+import { Controller } from '../../../lib/controller/controller';
 import httpStatus from 'http-status';
 import { userEraserValidator } from '../validators/user-eraser-validator';
-import { CRUD } from '../../../interfaces/service';
+import { CRUD } from '../../../lib/crud/crud';
 import { User } from '@prisma/client';
 import { Validator } from '../../../lib/validation/validator';
 

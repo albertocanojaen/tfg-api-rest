@@ -6,7 +6,7 @@ import { Order } from '../../../lib/criteria/classes/order';
 import { usersRepository } from '../repository/users-repository';
 import { usersValidator } from './users-validator';
 import { EmailAlreadyInUse } from '../errors/email-already-in-use';
-import { CRUD } from '../../../interfaces/service';
+import { CRUD } from '../../../lib/crud/crud';
 import { Validator } from '../../../lib/validation/validator';
 import { Passwords } from '../../../lib/password';
 
