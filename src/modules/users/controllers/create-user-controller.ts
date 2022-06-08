@@ -4,7 +4,7 @@ import httpStatus from 'http-status';
 import { UserModel } from '../models/UserModel';
 import { User } from '@prisma/client';
 import { ValidationParameters } from '../../../lib/validation/validation-parameters';
-import { CRUD } from '../../../lib/crud/crud';
+import { Repository } from '../../../lib/repository';
 import { Validator } from '../../../lib/validation/validator';
 import { userCreatorValidator } from '../validators/user-creator-validator';
 import { usersRepository } from '../repository/users-repository';
@@ -15,7 +15,7 @@ class CreateUserController implements Controller {
      * @param _userRepository
      * @param _userValidator
      */
-    constructor(private _userRepository: CRUD<User>, private _userValidator: Validator<User>) {}
+    constructor(private _userRepository: Repository<User>, private _userValidator: Validator<User>) {}
 
     /**
      * Execute the use case

@@ -6,7 +6,7 @@ import { Order } from '../../../lib/criteria/classes/order';
 import { usersRepository } from '../repository/users-repository';
 import { usersValidator } from './users-validator';
 import { EmailAlreadyInUse } from '../errors/email-already-in-use';
-import { CRUD } from '../../../lib/crud/crud';
+import { Repository } from '../../../lib/repository';
 import { Validator } from '../../../lib/validation/validator';
 import { Passwords } from '../../../lib/password';
 
@@ -16,7 +16,7 @@ export class UserUpdaterValidator implements Validator<User> {
      * @param _userRepository the repository
      * @param _usersValidator the user global validator
      */
-    constructor(private _userRepository: CRUD<User>, private _usersValidator: Validator<User>) {}
+    constructor(private _userRepository: Repository<User>, private _usersValidator: Validator<User>) {}
 
     public async validate(parameters: ValidationParameters<User>): Promise<void> {
         // Call the global user validator

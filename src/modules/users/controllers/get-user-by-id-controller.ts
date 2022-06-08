@@ -3,7 +3,7 @@ import { User } from '@prisma/client';
 import httpStatus from 'http-status';
 import { Controller } from '../../../lib/controller/controller';
 import { IdentifierIsEmpty } from '../errors/identifier-is-empty';
-import { CRUD } from '../../../lib/crud/crud';
+import { Repository } from '../../../lib/repository';
 import { usersRepository } from '../repository/users-repository';
 
 class GetUserByIdController implements Controller {
@@ -12,7 +12,7 @@ class GetUserByIdController implements Controller {
      * @param _userRepository
      * @param _userValidator
      */
-    constructor(private _userRepository: CRUD<User>) {}
+    constructor(private _userRepository: Repository<User>) {}
 
     /**
      * Execute the use case

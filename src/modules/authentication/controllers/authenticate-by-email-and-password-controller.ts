@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Controller } from '../../../lib/controller/controller';
 import httpStatus from 'http-status';
 import { User } from '@prisma/client';
-import { CRUD } from '../../../lib/crud/crud';
+import { Repository } from '../../../lib/repository';
 import { usersRepository } from '../../users/repository/users-repository';
 import { InvalidCredentialsError } from '../errors/invalid-credentials';
 import { Criteria } from '../../../lib/criteria/classes/criteria';
@@ -19,7 +19,7 @@ class AuthenticateByEmailAndPasswordController implements Controller {
      * @param _repository
      * @param _userValidator
      */
-    constructor(private _repository: CRUD<User>, private _secretKey: string) {}
+    constructor(private _repository: Repository<User>, private _secretKey: string) {}
 
     /**
      * Execute the use case
