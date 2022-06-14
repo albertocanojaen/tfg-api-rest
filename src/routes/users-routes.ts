@@ -1,4 +1,4 @@
-import { Routing } from '../lib/routing/routing';
+import { Routing } from '../lib/routing';
 import { Request, Response, Router, NextFunction } from 'express';
 import { getUserByIdController } from '../modules/users/controllers/get-user-by-id-controller';
 import { deleteUserController } from '../modules/users/controllers/delete-user-controller';

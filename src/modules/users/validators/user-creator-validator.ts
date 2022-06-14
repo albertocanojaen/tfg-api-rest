@@ -4,7 +4,7 @@ import { Criteria } from '../../../lib/criteria/classes/criteria';
 import { Filters } from '../../../lib/criteria/classes/filters';
 import { Order } from '../../../lib/criteria/classes/order';
 import { EmailAlreadyInUse } from '../errors/email-already-in-use';
-import { CRUD } from '../../../lib/crud/crud';
+import { Repository } from '../../../lib/repository';
 import { usersRepository } from '../repository/users-repository';
 import { Validator } from '../../../lib/validation/validator';
 
@@ -13,7 +13,7 @@ class UserCreatorValidator implements Validator<User> {
      * Class constructor
      * @param _userRepository
      */
-    constructor(private _userRepository: CRUD<User>) {}
+    constructor(private _userRepository: Repository<User>) {}
 
     /**
      * Validate the user primitives

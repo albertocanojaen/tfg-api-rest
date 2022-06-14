@@ -6,7 +6,7 @@ import { Order } from '../../../lib/criteria/classes/order';
 import { usersRepository } from '../repository/users-repository';
 import { usersValidator } from './users-validator';
 import { UserNotExists } from '../errors/user-not-exists';
-import { CRUD } from '../../../lib/crud/crud';
+import { Repository } from '../../../lib/repository';
 import { Validator } from '../../../lib/validation/validator';
 
 export class UserEraserValidator implements Validator<User> {
@@ -14,7 +14,7 @@ export class UserEraserValidator implements Validator<User> {
      * Class constructor
      * @param _userRepository
      */
-    constructor(private _userRepository: CRUD<User>, private _usersValidator: Validator<User>) {}
+    constructor(private _userRepository: Repository<User>, private _usersValidator: Validator<User>) {}
 
     public async validate(parameters: ValidationParameters<User>): Promise<void> {
         // Call the parent validation

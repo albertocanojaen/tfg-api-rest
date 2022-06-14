@@ -1,6 +1,6 @@
 import { Request, Response, Router, NextFunction } from 'express';
 import httpStatus from 'http-status';
-import { Routing } from '../lib/routing/routing';
+import { Routing } from '../lib/routing';
 import { authenticateByEmailAndPasswordController } from '../modules/authentication/controllers/authenticate-by-email-and-password-controller';
 import { authenticateByTokenController } from '../modules/authentication/controllers/authenticate-by-token-controller';
 

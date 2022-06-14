@@ -3,7 +3,7 @@ import { usersRepository } from '../repository/users-repository';
 import { Controller } from '../../../lib/controller/controller';
 import httpStatus from 'http-status';
 import { userEraserValidator } from '../validators/user-eraser-validator';
-import { CRUD } from '../../../lib/crud/crud';
+import { Repository } from '../../../lib/repository';
 import { User } from '@prisma/client';
 import { Validator } from '../../../lib/validation/validator';
 
@@ -13,7 +13,7 @@ export class DeleteUserController implements Controller {
      * @param _userRepository
      * @param _userValidator
      */
-    constructor(private _userRepository: CRUD<User>, private _userValidator: Validator<User>) {}
+    constructor(private _userRepository: Repository<User>, private _userValidator: Validator<User>) {}
 
     /**
      * Execute the use case

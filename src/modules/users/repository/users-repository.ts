@@ -1,9 +1,9 @@
 import PrismaHandler from '../../../lib/prisma/prisma-handler';
 import { User } from '@prisma/client';
-import { CRUD } from '../../../lib/crud/crud';
+import { Repository } from '../../../lib/repository';
 import { Criteria } from '../../../lib/criteria/classes/criteria';
 
-class UsersRepository implements CRUD<User> {
+class UsersRepository implements Repository<User> {
     /**
      * Create a new user in the database
      *

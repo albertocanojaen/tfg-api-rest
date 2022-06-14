@@ -1,5 +1,5 @@
 import { Criteria } from '../criteria/classes/criteria';
-export interface CRUD<Primitives> {
+export interface Repository<Primitives> {
     /**
      * Insert into the database the following object passed by parameters.
      *

@@ -3,7 +3,7 @@ import { Controller } from '../../../lib/controller/controller';
 import httpStatus from 'http-status';
 import { UserModel } from '../models/UserModel';
 import { userUpdaterValidator } from '../validators/user-updater-validator';
-import { CRUD } from '../../../lib/crud/crud';
+import { Repository } from '../../../lib/repository';
 import { User } from '@prisma/client';
 import { Validator } from '../../../lib/validation/validator';
 import { usersRepository } from '../repository/users-repository';
@@ -14,7 +14,7 @@ export class UpdateUserController implements Controller {
      * @param _userRepository
      * @param _userValidator
      */
-    constructor(private _userRepository: CRUD<User>, private _userValidator: Validator<User>) {}
+    constructor(private _userRepository: Repository<User>, private _userValidator: Validator<User>) {}
 
     /**
      * Execute the use case

@@ -4,7 +4,7 @@ import { User } from '@prisma/client';
 import httpStatus from 'http-status';
 import { Controller } from '../../../lib/controller/controller';
 import { Criteria } from '../../../lib/criteria/classes/criteria';
-import { CRUD } from '../../../lib/crud/crud';
+import { Repository } from '../../../lib/repository';
 
 export class GetUsersByCriteriaController implements Controller {
     /**
@@ -12,7 +12,7 @@ export class GetUsersByCriteriaController implements Controller {
      * @param _userRepository
      * @param _userValidator
      */
-    constructor(private _userRepository: CRUD<User>) {}
+    constructor(private _userRepository: Repository<User>) {}
 
     /**
      * Execute the use case
