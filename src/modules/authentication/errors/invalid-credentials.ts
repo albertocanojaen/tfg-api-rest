@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 import { InvalidArgumentError } from '../../../lib/errors/invalid-argument-error';
 
 export class InvalidCredentialsError extends InvalidArgumentError {
-    public statusCode = httpStatus.BAD_REQUEST;
+    public statusCode = httpStatus.UNAUTHORIZED;
 
     constructor() {
         super();
