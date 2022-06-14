@@ -42,7 +42,7 @@
         "dev": "ts-node-dev --respawn ./src/server.ts",
         "test": "jest",
         "lint": "eslint . --ext .ts --fix",
-        "mysql:start": "docker build -t prisma-server ."
+        "db:init": "docker-compose up -d"
     },
     "repository": {
         "type": "git",
