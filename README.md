@@ -12,13 +12,13 @@ SERVER=127.0.0.1
 PORT=3300
 APPLY_ENCRYPTION=true
 SECRET_KEY=0304141412
-DATABASE_URL=mysql://root:pass@127.0.0.1:6033/db
+DATABASE_URL=postgre://prisma:prisma@localhost:6033/prisma
 ```
 
 
 # :pencil: Instalación
 
-1. Para la instalación del proyecto se requiere tener instalado tanto Node.js como npm en el sistema. Si tenemos ambos instalados desde el directorio del proyecto deberemos ejecutar el siguiente comando:
+1. Para la instalación del proyecto es necesario instalar tanto Node.js como NPM en el sistema. Si tenemos ambos instalados, desde el directorio raiz del proyecto deberemos ejecutar lo siguiente:
 
 ```
 npm install
@@ -26,18 +26,18 @@ npm install
 
 2. En el package.json del proyecto he includo distintos scripts para facilitar la inicialización del proyecto. Para ello he preparado un contenedor de Docker donde incluyo una instalación limpia de MySQL y phpymadmin como DBMS (Database Management System). Para la creación del contenedor, es necesario tener instalado y en ejecución Docker, y ejecutar el siguiente comando en el directorio raiz del proyecto: 
 ```
-docker compose up -d
+npm run db:init
 ```
 
 3. Debemos también modificar el archivo de entorno mencionado anteriormente con los datos necesarios e incluirlo en el directorio raiz del proyecto. 
 
 4. Es necesario generar el schema de Prisma, para poder crear las correspondientes tablas en la base de datos (esto es necesario realizarlo una única vez al instalar el proyecto). Para ello debemos ejecutar los siguientes comandos en el orden indicado:
 ```
-1) npx prisma migrate dev
-2) npx prisma generate
+1 -> npx prisma generate
+2 -> npx prisma migrate dev
 ```
 
-5. Una vez realizados todos los cambios anteriores, para iniciar la API en modo de desarrollo deberíamos ejecutar el siguiente script de npm:
+5. Una vez realizados los pasos anteriores, estamos listos para iniciar la API en modo de desarrollo. Para ello deberíamos ejecutar lo siguiente:
 ```
 npm run dev
 ```
